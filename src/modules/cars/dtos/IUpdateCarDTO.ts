@@ -1,5 +1,4 @@
 export interface IUpdateCar {
-  id: string;
   plate?: string;
   chassis?: string;
   reindeer?: string;

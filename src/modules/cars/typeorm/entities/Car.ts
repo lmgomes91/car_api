@@ -16,25 +16,24 @@ class Car {
 
   @Column()
   chassis: string;
-  
+
   @Column()
   reindeer: string;
-  
+
   @Column()
   model: string;
-  
+
   @Column()
   brand: string;
-  
+
   @Column()
   year: number;
-  
+
   @CreateDateColumn()
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
-
+  updated_at: Date;
 }
 
 export default Car;

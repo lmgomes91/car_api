@@ -1,10 +1,11 @@
+import ICarRepository from "../../repositories";
 import { getRepository, Repository } from "typeorm";
-import { ICreateCar } from "../dtos/ICreateCarDTO";
-import { IRetrieveCar } from "../dtos/IRetrieveCarDTO";
-import { IUpdateCar } from "../dtos/IUpdateCarDTO";
+import { ICreateCar } from "../../dtos/ICreateCarDTO";
+import { IRetrieveCar } from "../../dtos/IRetrieveCarDTO";
+import { IUpdateCar } from "../../dtos/IUpdateCarDTO";
 import Car from "../entities/Car";
 
-export class CarRepository {
+export class CarRepository implements ICarRepository {
   private ormRepository: Repository<Car>;
 
   constructor() {
@@ -36,12 +37,26 @@ export class CarRepository {
     }
   }
 
-  public async update(iUpdate: IUpdateCar): Promise<Car | Error> {
+  public async retrieveOneById(id: string): Promise<Car | Error> {
     try {
-      const car = await this.ormRepository.findOne({ id: iUpdate.id });
+      const car = await this.ormRepository.findOne({ id });
 
       if (!car) {
-        return new Error(`Id ${iUpdate.id} has no car associated`);
+        return new Error(`Id ${id} has no car associated`);
+      }
+
+      return car;
+    } catch (error) {
+      return new Error(error);
+    }
+  }
+
+  public async update(iUpdate: IUpdateCar, id: string): Promise<Car | Error> {
+    try {
+      const car = await this.ormRepository.findOne({ id: id });
+
+      if (!car) {
+        return new Error(`Id ${id} has no car associated`);
       }
 
       car.brand = iUpdate.brand || car.brand;

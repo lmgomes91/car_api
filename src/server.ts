@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "./config/container";
 import "./config/database";
 import cors from "cors";
 import express from "express";
