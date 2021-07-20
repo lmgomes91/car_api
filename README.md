@@ -1,5 +1,5 @@
 # car_api
-This project is a CRUD of car object using Node.JS, Typescript, Express, Typeorm and Chai for tests
+This project is a CRUD of car object using Node.JS, Typescript, Express, Typeorm. For tests, Mocha and Chai.
 
 ## Routes
     
