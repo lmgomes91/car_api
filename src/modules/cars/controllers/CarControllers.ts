@@ -50,7 +50,7 @@ export default class CarController {
       const removed = await carService.removeCar(id);
 
       if (removed instanceof Error) {
-        return res.status(400).json({ message: "Failed to create car" });
+        return res.status(400).json({ message: "Failed to delete car" });
       }
 
       return res.status(200).json({ removed });
