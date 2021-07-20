@@ -29,7 +29,7 @@ All configuration can be found at ormconfig.json, it was made using [PostgreSQL]
 
 **Tables**
     
-All table schemas are available at migrations folder: _src/shared/database/migrations_
+The table schema is available at migrations folder: _src/config/database/migrations_
 
     To create the tables at SQL DataBase, run:
       npm run typeorm migration:run
