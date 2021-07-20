@@ -15,25 +15,55 @@ describe("Create car tests", () => {
 
   it("should create a car", async () => {
     const car = await createCarService.createCar({
-      brand: "Fiat",
-      chassis: "1kohj34k12h4jk23hj",
-      model: "Palio",
-      plate: "bbb1111",
-      reindeer: "fsdfgr233223",
-      year: 2012,
+      brand: "Acura",
+      chassis: "791AWJub10Xb49968",
+      model: "Legend 3.2/3.5",
+      plate: "MZN0908",
+      reindeer: "38582127391",
+      year: 1991,
     });
     expect(car).to.haveOwnProperty("id");
   });
 
-  //   it("should not create a car", async () => {
-  //     const car = await createCarService.createCar({
-  //       brand: "Fiat",
-  //       chassis: "1kohj34k12h4jk23hj",
-  //       model: "Palio",
-  //       plate: "bbb1111",
-  //       reindeer: "fsdfgr233223",
-  //       year: 2012,
-  //     });
-  //     expect(car).to.haveOwnProperty("id");
-  //   });
+  it("should not create an equal car", async () => {
+    await createCarService.createCar({
+      brand: "Acura",
+      chassis: "791AWJub10Xb49968",
+      model: "Legend 3.2/3.5",
+      plate: "MZN0908",
+      reindeer: "38582127391",
+      year: 1991,
+    });
+
+    const car = await createCarService.createCar({
+      brand: "Acura",
+      chassis: "791AWJub10Xb49968",
+      model: "Legend 3.2/3.5",
+      plate: "MZN0908",
+      reindeer: "38582127391",
+      year: 1991,
+    });
+    expect(car).to.instanceOf(Error);
+  });
+
+  it("should not create a car with wrong chassis length", async () => {
+    await createCarService.createCar({
+      brand: "Acura",
+      chassis: "791AWJub10Xb49968",
+      model: "Legend 3.2/3.5",
+      plate: "MZN0908",
+      reindeer: "38582127391",
+      year: 1991,
+    });
+
+    const car = await createCarService.createCar({
+      brand: "Acura",
+      chassis: "791AWJub10Xb4996",
+      model: "Legend 3.2/3.5",
+      plate: "MZN0909",
+      reindeer: "38582127392",
+      year: 1991,
+    });
+    expect(car).to.instanceOf(Error);
+  });
 });

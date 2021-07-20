@@ -16,16 +16,18 @@ export default class CreateCarService {
    * @returns
    */
   public createCar = async (icreate: ICreateCar): Promise<Car | Error> => {
-    try {
-      const car = await this.carRepository.create(icreate);
-
-      if (car instanceof Error) {
-        return new Error("Failed to create car");
-      }
-
-      return car;
-    } catch (error) {
-      return new Error(error);
+    if (
+      icreate.chassis.length !== 17 ||
+      (icreate.reindeer.length !== 11 && icreate.reindeer.length !== 9) ||
+      icreate.plate.length !== 7
+    ) {
+      return new Error(
+        "Could not create, please verify chasssis, reindeer or plate values"
+      );
     }
+
+    const car = await this.carRepository.create(icreate);
+
+    return car;
   };
 }

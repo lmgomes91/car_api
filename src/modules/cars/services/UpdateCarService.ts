@@ -14,16 +14,20 @@ export default class UpdateCarService {
     iupdate: IUpdateCar,
     id: string
   ): Promise<Car | Error> => {
-    try {
-      const car = await this.carRepository.update(iupdate, id);
-
-      if (car instanceof Error) {
-        return new Error("Failed to update car");
-      }
-
-      return car;
-    } catch (error) {
-      return new Error(error);
+    if (
+      (iupdate.chassis && iupdate.chassis?.length !== 17) ||
+      (iupdate.reindeer &&
+        iupdate.reindeer?.length !== 11 &&
+        iupdate.reindeer?.length !== 9) ||
+      (iupdate.plate && iupdate.plate?.length !== 7)
+    ) {
+      return new Error(
+        "Could not update, please verify chasssis, reindeer or plate values"
+      );
     }
+
+    const car = await this.carRepository.update(iupdate, id);
+
+    return car;
   };
 }

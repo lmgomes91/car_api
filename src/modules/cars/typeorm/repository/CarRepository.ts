@@ -14,6 +14,17 @@ export class CarRepository implements ICarRepository {
 
   public async create(iCreate: ICreateCar): Promise<Car | Error> {
     try {
+      const verify = await this.ormRepository
+        .createQueryBuilder("cars")
+        .where(`cars.chassis = :chassis`, { chassis: iCreate.chassis })
+        .orWhere("cars.reindeer = :reindeer", { reindeer: iCreate.reindeer })
+        .orWhere("cars.plate = :plate", { plate: iCreate.plate })
+        .getCount();
+
+      if (verify) {
+        return new Error("The car is already in data base");
+      }
+
       const car = this.ormRepository.create(iCreate);
       return await this.ormRepository.save(car);
     } catch (error) {
@@ -53,6 +64,17 @@ export class CarRepository implements ICarRepository {
 
   public async update(iUpdate: IUpdateCar, id: string): Promise<Car | Error> {
     try {
+      const verify = await this.ormRepository
+        .createQueryBuilder("cars")
+        .where(`cars.chassis = :chassis`, { chassis: iUpdate.chassis })
+        .orWhere("cars.reindeer = :reindeer", { reindeer: iUpdate.reindeer })
+        .orWhere("cars.plate = :plate", { plate: iUpdate.plate })
+        .getCount();
+
+      if (verify) {
+        return new Error("There is a car database with this attributes");
+      }
+
       const car = await this.ormRepository.findOne({ id: id });
 
       if (!car) {

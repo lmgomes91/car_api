@@ -2,21 +2,20 @@ import { expect } from "chai";
 import "mocha";
 import { FakeCarRepository } from "../src/modules/cars/repositories/fakes/FakeCarRepository";
 import CreateCarService from "../src/modules/cars/services/CreateCarService";
-import RetrieveCarByIdService from "../src/modules/cars/services/RetrieveCarByIdService";
-import Car from "../src/modules/cars/typeorm/entities/Car";
+import RemoveCarService from "../src/modules/cars/services/RemoveCarService";
 
 let fakeRepository: FakeCarRepository;
 let createCarService: CreateCarService;
-let retrieveById: RetrieveCarByIdService;
+let removeCar: RemoveCarService;
 
-describe("Retrieve car by id tests", () => {
-  beforeEach(() => {
+describe("Remove car tests", () => {
+  beforeEach(async () => {
     fakeRepository = new FakeCarRepository();
     createCarService = new CreateCarService(fakeRepository);
-    retrieveById = new RetrieveCarByIdService(fakeRepository);
+    removeCar = new RemoveCarService(fakeRepository);
   });
 
-  it("Should retrieve a car", async () => {
+  it("Should delete a car", async () => {
     const car = await createCarService.createCar({
       brand: "Acura",
       chassis: "791AWJub10Xb49968",
@@ -30,12 +29,16 @@ describe("Retrieve car by id tests", () => {
       return;
     }
 
-    const findCar = await retrieveById.retrieveById(car.id);
+    const remove = await removeCar.removeCar(car.id);
 
-    expect(findCar).to.instanceOf(Car);
+    if (remove instanceof Error) {
+      return;
+    }
+
+    expect(remove).to.eql(true);
   });
 
-  it("Should not retrieve a car", async () => {
+  it("Should not delete a car with wrong id", async () => {
     const car = await createCarService.createCar({
       brand: "Acura",
       chassis: "791AWJub10Xb49968",
@@ -45,8 +48,12 @@ describe("Retrieve car by id tests", () => {
       year: 1991,
     });
 
-    const findCar = await retrieveById.retrieveById("aaaa");
+    if (car instanceof Error) {
+      return;
+    }
 
-    expect(findCar).to.instanceOf(Error);
+    const remove = await removeCar.removeCar("id");
+
+    expect(remove).to.instanceOf(Error);
   });
 });

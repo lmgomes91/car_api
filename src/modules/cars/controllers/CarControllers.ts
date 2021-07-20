@@ -29,7 +29,7 @@ export default class CarController {
       });
 
       if (car instanceof Error) {
-        return res.status(400).json({ message: "Failed to create car" });
+        return res.status(400).json({ message: car.message });
       }
 
       return res.status(200).json({ car });
@@ -82,7 +82,7 @@ export default class CarController {
 
   public async retrieve(req: Request, res: Response): Promise<Response> {
     try {
-      const iRetrieve: IRetrieveCar = req.query;
+      const iRetrieve: IRetrieveCar | undefined = req.query;
 
       const carService = container.resolve(RetrieveCarService);
       const car = await carService.retrieve(iRetrieve);
@@ -126,7 +126,7 @@ export default class CarController {
       );
 
       if (car instanceof Error) {
-        return res.status(400).json({ message: "Failed to update car" });
+        return res.status(400).json({ message: car.message });
       }
 
       return res.status(200).json({ car });
